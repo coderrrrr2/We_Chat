@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_chat_app/core/init/init_services.dart';
 import 'package:practice_chat_app/features/navigation/all_pages.dart';
 
 void main() async {
-  await setupFirebase();
+  await setup();
   runApp(const MainApp());
 }
 
-Future<void> setupFirebase() async {
+Future<void> setup() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupFirebase();
 }
