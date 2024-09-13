@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:practice_chat_app/features/navigation/all_pages.dart';
 
 void main() async {
@@ -18,6 +19,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.montserratTextTheme(),
+        primarySwatch: Colors.blue,
+      ),
       initialRoute: AppPages.initial,
       debugShowCheckedModeBanner: false,
       getPages: AppPages.pages,
