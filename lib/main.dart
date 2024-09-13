@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:practice_chat_app/features/navigation/all_pages.dart';
 
-void main() {
+void main() async {
+  await setupFirebase();
   runApp(const MainApp());
+}
+
+Future<void> setupFirebase() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupFirebase();
 }
 
 class MainApp extends StatelessWidget {
