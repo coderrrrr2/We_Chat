@@ -9,6 +9,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cloud_firestore: ^5.4.1
+  cupertino_icons: ^1.0.8
+  dash_chat_2: ^0.0.21
+  delightful_toast: ^1.1.0
+  firebase_analytics: ^11.3.1
+  firebase_auth: ^5.2.1
+  firebase_core: ^3.4.1
+  firebase_storage: ^12.3.0
+  get_it: ^7.7.0
+  google_fonts: ^6.2.1
+  image_picker: ^1.1.2
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
