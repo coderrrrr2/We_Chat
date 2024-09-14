@@ -26,4 +26,26 @@ class StorageService {
       return null;
     }
   }
+
+  Future<String?> uploadChatImage(
+      {required File file, required String chatId}) async {
+    try {
+      Reference fileRef = _storage.ref('chats/$chatId').child(
+          '${DateTime.now().toIso8601String()}${p.extension(file.path)}');
+      UploadTask task = fileRef.putFile(file);
+      return task.then(
+        // ignore: body_might_complete_normally_nullable
+        (p) {
+          if (p.state == TaskState.success) {
+            return fileRef.getDownloadURL();
+          } else if (p.state == TaskState.error) {
+            throw Exception();
+          }
+        },
+      );
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
 }
