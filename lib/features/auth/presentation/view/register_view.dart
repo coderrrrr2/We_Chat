@@ -2,10 +2,13 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:practice_chat_app/core/app_validator.dart';
+import 'package:practice_chat_app/core/init/init_services.dart';
+import 'package:practice_chat_app/core/services/image_picker_service.dart';
 import 'package:practice_chat_app/features/auth/presentation/routes/routes.dart';
 import 'package:practice_chat_app/features/auth/viewmodel/auth_provider.dart';
 import 'package:practice_chat_app/features/home/presentation/routes/routes.dart';
 import 'package:practice_chat_app/features/navigation/app_navigator.dart';
+import 'package:practice_chat_app/models/user_model.dart';
 import 'package:practice_chat_app/shared/utils/app_alert.dart';
 import 'package:practice_chat_app/shared/widgets/app_button.dart';
 import 'package:practice_chat_app/shared/widgets/app_column.dart';
@@ -23,7 +26,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final TextEditingController nameController = TextEditingController();
-
+  final ImagePickerService imagePicker = ImagePickerService();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -63,7 +66,6 @@ class _RegisterViewState extends State<RegisterView> {
               AppTextField(
                 controller: emailController,
                 header: 'Email',
-                obscureText: true,
                 validator: (p0) {
                   return AppValidator.validateEmail(p0);
                 },
@@ -78,19 +80,36 @@ class _RegisterViewState extends State<RegisterView> {
               ),
               addHeight(30),
               AppButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      vm
-                          .logIn(emailController.text, passwordController.text)
-                          .then((value) {
-                        if (value) {
-                          log("login is succesful");
-                          AppNavigator.replaceAllRoutes(HomeRoutes.mainView);
-                        } else {
-                          AppAlert.showToast(context,
-                              message: "Failed to Login, Try again");
+                  onPressed: () async {
+                    if (formKey.currentState!.validate() &&
+                        _selectedImage != null) {
+                      final isSignedUp = await vm.signUp(
+                          emailController.text, passwordController.text);
+                      if (isSignedUp) {
+                        String? pfpUrl =
+                            await storageService.uploadUserProfilePicture(
+                                file: _selectedImage!,
+                                uid: authService.user!.uid);
+                        log(pfpUrl ?? "image not uploaded succesfully");
+                        if (pfpUrl != null) {
+                          final createUser =
+                              await dataBaseService.createUserProfile(
+                                  context: context,
+                                  userProfile: UserProfile(
+                                      uid: authService.user!.uid,
+                                      name: nameController.text,
+                                      pfpUrl: pfpUrl));
+                          if (createUser) {
+                            AppNavigator.replaceAllRoutes(HomeRoutes.mainView);
+                          }
                         }
-                      });
+                      } else {
+                        AppAlert.showToast(context,
+                            message: "Failed to Login, Try again");
+                      }
+                    } else if (_selectedImage == null) {
+                      AppAlert.showToast(context,
+                          message: "An Image must be selected");
                     }
                   },
                   text: 'Register'),
@@ -117,7 +136,19 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget _getImageContainer() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () async {
+        await imagePicker.pickImageFromGallery().then(
+          (file) {
+            if (file != null) {
+              setState(() {
+                _selectedImage = file;
+              });
+            } else {
+              AppAlert.showToast(context, message: "An Error Occured");
+            }
+          },
+        );
+      },
       child: CircleAvatar(
         radius: MediaQuery.of(context).size.width * 0.15,
         backgroundImage:

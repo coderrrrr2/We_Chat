@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:practice_chat_app/core/services/auth_service.dart';
+import 'package:practice_chat_app/core/init/init_services.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final AuthService authService = AuthService();
-
   AuthProvider() {
     if (authService.user != null) {
       isLoggedIn = true;
@@ -28,6 +26,19 @@ class AuthProvider extends ChangeNotifier {
       isLoading = true;
 
       return authService.login(email, password);
+    } catch (e) {
+      isLoading = false;
+      return false;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  Future<bool> signUp(String email, String password) async {
+    try {
+      isLoading = true;
+
+      return authService.signUp(email, password);
     } catch (e) {
       isLoading = false;
       return false;
