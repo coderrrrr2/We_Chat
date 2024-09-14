@@ -69,7 +69,7 @@ class _LoginViewState extends State<LoginView> {
                           .then((value) {
                         if (value) {
                           log("login is succesful");
-                          AppNavigator.replaceAllRoutes(HomeRoutes.mainView);
+                          AppNavigator.pushRoute(HomeRoutes.mainView);
                         } else {
                           AppAlert.showToast(context,
                               message: "Failed to Login, Try again");
