@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:practice_chat_app/core/init/init_services.dart';
 import 'package:practice_chat_app/features/auth/presentation/routes/routes.dart';
 import 'package:practice_chat_app/features/home/presentation/routes/routes.dart';
+import 'package:practice_chat_app/features/home/presentation/view/chat_page.dart';
 import 'package:practice_chat_app/features/home/presentation/view/widgets/chat_tile.dart';
 import 'package:practice_chat_app/features/navigation/app_navigator.dart';
 import 'package:practice_chat_app/models/user_model.dart';
@@ -64,11 +65,13 @@ class _HomeViewState extends State<HomeView> {
                       final isChatExists = await dataBaseService
                           .checkIfChatExits(authService.user!.uid, user.uid);
                       if (isChatExists) {
-                        AppNavigator.pushRoute(HomeRoutes.chatView);
+                        AppNavigator.pushRoute(HomeRoutes.chatView,
+                            arguments: ChatPageArgs(userProfile: user));
                       } else {
                         await dataBaseService.createNewChat(
                             authService.user!.uid, user.uid);
-                        AppNavigator.pushRoute(HomeRoutes.chatView);
+                        AppNavigator.pushRoute(HomeRoutes.chatView,
+                            arguments: ChatPageArgs(userProfile: user));
                       }
                     },
                   );
