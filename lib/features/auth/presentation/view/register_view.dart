@@ -53,7 +53,7 @@ class _RegisterViewState extends State<RegisterView> {
               const LeadingText(text: "Let's, get going!"),
               const TrailingText(
                   text: "Register an account using the form below"),
-              addHeight(30),
+              addHeight(20),
               Center(child: _getImageContainer()),
               addHeight(10),
               AppTextField(
@@ -78,7 +78,7 @@ class _RegisterViewState extends State<RegisterView> {
                   return AppValidator.validatePassword(p0);
                 },
               ),
-              addHeight(30),
+              addHeight(10),
               AppButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate() &&
@@ -124,7 +124,7 @@ class _RegisterViewState extends State<RegisterView> {
                     },
                     child: const Text('Login'),
                   ),
-                  addHeight(60),
+                  addHeight(20),
                 ],
               ),
             ],
