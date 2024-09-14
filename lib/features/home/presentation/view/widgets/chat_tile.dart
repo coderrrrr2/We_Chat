@@ -3,13 +3,19 @@ import 'package:practice_chat_app/models/user_model.dart';
 
 class ChatTile extends StatelessWidget {
   final UserProfile userProfile;
-  const ChatTile({super.key, required this.userProfile});
+  final VoidCallback ontap;
+  const ChatTile({super.key, required this.userProfile, required this.ontap});
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(userProfile.pfpUrl),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: ListTile(
+        onTap: ontap,
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(userProfile.pfpUrl),
+        ),
+        title: Text(userProfile.name),
       ),
     );
   }
