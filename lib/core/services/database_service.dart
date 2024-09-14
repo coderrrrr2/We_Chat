@@ -1,15 +1,15 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:practice_chat_app/core/init/init_services.dart';
+import 'package:practice_chat_app/models/chat_model.dart';
 import 'package:practice_chat_app/models/user_model.dart';
 import 'package:practice_chat_app/shared/utils/app_alert.dart';
 
 class DatabaseService {
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   CollectionReference? _usersCollection;
+  CollectionReference? _chatCollection;
 
   DatabaseService() {
     _setupCollectionReferences();
@@ -17,7 +17,7 @@ class DatabaseService {
 
   void _setupCollectionReferences() {
     _usersCollection =
-        _firebaseFirestore.collection('users').withConverter<UserProfile>(
+        _firestore.collection('users').withConverter<UserProfile>(
       fromFirestore: (snapshot, _) {
         return UserProfile.fromJson(snapshot.data()!);
       },
@@ -25,6 +25,12 @@ class DatabaseService {
         return user.toJson();
       },
     );
+    _chatCollection = _firestore.collection('chats').withConverter<Chat>(
+        fromFirestore: (snapshot, _) {
+      return Chat.fromJson(snapshot.data()!);
+    }, toFirestore: (chat, _) {
+      return chat.toJson();
+    });
   }
 
   Future<bool> createUserProfile(
@@ -51,5 +57,23 @@ class DatabaseService {
     return _usersCollection
         ?.where("uid", isNotEqualTo: authService.user!.uid)
         .snapshots() as Stream<QuerySnapshot<UserProfile>>;
+  }
+
+  Future<bool> checkIfChatExits(String uuid1, String uuid2) async {
+    String chatId = generateChatId(uuid1: uuid1, uuid2: uuid2);
+    final result = await _chatCollection?.doc(chatId).get();
+    if (result != null) {
+      return result.exists;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> createNewChat(String uuid1, String uuid2) async {
+    String chatId = generateChatId(uuid1: uuid1, uuid2: uuid2);
+
+    final docRef = _chatCollection!.doc(chatId);
+    final chat = Chat(id: chatId, participantIds: [uuid1, uuid2], messages: []);
+    await docRef.set(chat);
   }
 }

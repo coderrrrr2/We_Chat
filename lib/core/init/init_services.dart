@@ -21,3 +21,12 @@ final GetIt _getIt = GetIt.instance;
 final authService = _getIt.get<AuthService>();
 final storageService = _getIt.get<StorageService>();
 final dataBaseService = _getIt.get<DatabaseService>();
+
+String generateChatId({required String uuid1, required String uuid2}) {
+  final List<String> uuids = [uuid1, uuid2];
+  uuids.sort();
+  return uuids.fold(
+    '',
+    (id, uuid) => "$id$uuid",
+  );
+}
