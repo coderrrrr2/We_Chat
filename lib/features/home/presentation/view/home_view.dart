@@ -4,7 +4,6 @@ import 'package:practice_chat_app/features/auth/presentation/routes/routes.dart'
 import 'package:practice_chat_app/features/navigation/app_navigator.dart';
 import 'package:practice_chat_app/shared/utils/app_alert.dart';
 import 'package:practice_chat_app/shared/utils/app_color.dart';
-import 'package:practice_chat_app/shared/widgets/app_column.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -42,6 +41,21 @@ class _HomeViewState extends State<HomeView> {
                 ))
           ],
         ),
-        body: AppColumn(children: []));
+        body: StreamBuilder(
+          stream: dataBaseService.getUserProfiles(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text("Unable to load data"),
+              );
+            }
+            if (snapshot.hasData && snapshot.data != null) {
+              return ListView();
+            }
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          },
+        ));
   }
 }

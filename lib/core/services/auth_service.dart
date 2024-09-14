@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   AuthService() {
+    log("intialized this service");
     _auth.authStateChanges().listen((User? user) {
       _user = user;
     });

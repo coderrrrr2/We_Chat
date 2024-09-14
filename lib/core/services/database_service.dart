@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:practice_chat_app/core/init/init_services.dart';
 import 'package:practice_chat_app/models/user_model.dart';
 import 'package:practice_chat_app/shared/utils/app_alert.dart';
 
@@ -44,5 +45,11 @@ class DatabaseService {
           icon: Icons.mark_chat_read, message: e.toString());
       return false;
     }
+  }
+
+  Stream<QuerySnapshot<UserProfile>> getUserProfiles() {
+    return _usersCollection
+        ?.where("uid", isNotEqualTo: authService.user!.uid)
+        .snapshots() as Stream<QuerySnapshot<UserProfile>>;
   }
 }
