@@ -2,20 +2,14 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  // Private static instance
-  static final AuthService _instance = AuthService._internal();
-
-  // Private constructor
-  AuthService._internal() {
-    _auth = FirebaseAuth.instance;
+  AuthService() {
+    _auth.authStateChanges().listen((User? user) {
+      _user = user;
+    });
   }
 
-  // Factory constructor to return the single instance
-  factory AuthService() {
-    return _instance;
-  }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  late FirebaseAuth _auth;
   User? _user;
 
   User? get user => _user;
@@ -32,5 +26,17 @@ class AuthService {
       log('Error during login: $e');
     }
     return false;
+  }
+
+  // Optional: Method to handle logout
+  Future<bool> logout() async {
+    try {
+      await _auth.signOut();
+      _user = null;
+      return true;
+    } catch (e) {
+      log('Error during logout: $e');
+      return false;
+    }
   }
 }

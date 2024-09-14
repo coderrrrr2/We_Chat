@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:practice_chat_app/core/app_validator.dart';
 import 'package:practice_chat_app/features/auth/presentation/routes/routes.dart';
@@ -13,20 +14,24 @@ import 'package:practice_chat_app/shared/shared_widgets.dart';
 import 'package:practice_chat_app/shared/utils/text.dart';
 import 'package:provider/provider.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
+  final TextEditingController nameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  File? _selectedImage;
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -42,12 +47,23 @@ class _LoginViewState extends State<LoginView> {
           child: AppColumn(
             isLoading: vm.isLoading,
             children: [
-              const LeadingText(text: "Hi, Welcome Back!"),
-              const TrailingText(text: "Hello again,  you've been missed"),
+              const LeadingText(text: "Let's, get going!"),
+              const TrailingText(
+                  text: "Register an account using the form below"),
               addHeight(30),
+              Center(child: _getImageContainer()),
+              addHeight(10),
+              AppTextField(
+                controller: nameController,
+                header: 'Name',
+                validator: (p0) {
+                  return AppValidator.validateName(p0);
+                },
+              ),
               AppTextField(
                 controller: emailController,
                 header: 'Email',
+                obscureText: true,
                 validator: (p0) {
                   return AppValidator.validateEmail(p0);
                 },
@@ -77,17 +93,17 @@ class _LoginViewState extends State<LoginView> {
                       });
                     }
                   },
-                  text: 'Login'),
+                  text: 'Register'),
               const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Don\'t have an account?'),
+                  const Text('Already have an account?'),
                   TextButton(
                     onPressed: () {
-                      AppNavigator.pushRoute(AuthRoutes.register);
+                      AppNavigator.replaceRoute(AuthRoutes.login);
                     },
-                    child: const Text('Sign Up'),
+                    child: const Text('Login'),
                   ),
                   addHeight(60),
                 ],
@@ -95,6 +111,17 @@ class _LoginViewState extends State<LoginView> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _getImageContainer() {
+    return GestureDetector(
+      onTap: () {},
+      child: CircleAvatar(
+        radius: MediaQuery.of(context).size.width * 0.15,
+        backgroundImage:
+            _selectedImage != null ? FileImage(_selectedImage!) : null,
       ),
     );
   }
