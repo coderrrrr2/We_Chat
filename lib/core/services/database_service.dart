@@ -55,6 +55,7 @@ class DatabaseService {
   }
 
   Stream<QuerySnapshot<UserProfile>> getUserProfiles() {
+    debugPrint(authService.user!.uid);
     return _usersCollection
         ?.where("uid", isNotEqualTo: authService.user!.uid)
         .snapshots() as Stream<QuerySnapshot<UserProfile>>;
