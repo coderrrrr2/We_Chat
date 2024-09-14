@@ -5,12 +5,14 @@ import 'package:practice_chat_app/core/init/init_services.dart';
 import 'package:practice_chat_app/features/auth/viewmodel/provider_list.dart';
 import 'package:practice_chat_app/features/home/viewmodel/providers_list.dart';
 import 'package:practice_chat_app/features/navigation/all_pages.dart';
+import 'package:practice_chat_app/features/navigation/viewmodel/provider_list.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   await setup();
   runApp(MultiProvider(
-      providers: [...authProvider, ...homeProvider], child: const MainApp()));
+      providers: [...authProvider, ...homeProvider, ...navigatorProviders],
+      child: const MainApp()));
 }
 
 Future<void> setup() async {
