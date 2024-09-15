@@ -92,6 +92,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 uid: authService.user!.uid);
                         log(pfpUrl ?? "image not uploaded succesfully");
                         if (pfpUrl != null) {
+                          if (!context.mounted) return;
                           final createUser =
                               await dataBaseService.createUserProfile(
                                   context: context,
@@ -100,10 +101,12 @@ class _RegisterViewState extends State<RegisterView> {
                                       name: nameController.text,
                                       pfpUrl: pfpUrl));
                           if (createUser) {
-                            AppNavigator.replaceAllRoutes(HomeRoutes.mainView);
+                            AppNavigator.replaceAllRoutes(HomeRoutes.baseView);
                           }
                         }
                       } else {
+                        if (!context.mounted) return;
+
                         AppAlert.showToast(context,
                             message: "Failed to Login, Try again");
                       }
