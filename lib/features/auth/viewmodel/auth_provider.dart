@@ -25,7 +25,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       isLoading = true;
 
-      return authService.login(email, password);
+      return await authService.login(email, password);
     } catch (e) {
       isLoading = false;
       return false;
@@ -38,7 +38,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       isLoading = true;
 
-      return authService.signUp(email, password);
+      return await authService.signUp(email, password);
     } catch (e) {
       isLoading = false;
       return false;

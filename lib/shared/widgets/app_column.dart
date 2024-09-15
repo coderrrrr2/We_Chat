@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppColumn extends StatelessWidget {
+class AppColumn extends StatefulWidget {
   final bool isScrollable;
   final bool isLoading;
   final EdgeInsetsGeometry? padding;
@@ -14,6 +14,11 @@ class AppColumn extends StatelessWidget {
     this.padding,
   });
 
+  @override
+  State<AppColumn> createState() => _AppColumnState();
+}
+
+class _AppColumnState extends State<AppColumn> {
   void removeFocus(BuildContext context) {
     FocusScope.of(context).unfocus();
   }
@@ -27,32 +32,32 @@ class AppColumn extends StatelessWidget {
       child: Stack(
         children: [
           // Main content
-          isScrollable
+          widget.isScrollable
               ? SafeArea(
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
-                    padding: padding ??
+                    padding: widget.padding ??
                         const EdgeInsets.symmetric(horizontal: 20)
                             .copyWith(top: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: children,
+                      children: widget.children,
                     ),
                   ),
                 )
               : SafeArea(
                   child: Padding(
-                    padding: padding ??
+                    padding: widget.padding ??
                         const EdgeInsets.symmetric(horizontal: 20)
                             .copyWith(top: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: children,
+                      children: widget.children,
                     ),
                   ),
                 ),
           // Loading indicator overlay
-          if (isLoading)
+          if (widget.isLoading)
             Container(
               color: Colors.black.withOpacity(0.5),
               child: const Center(
