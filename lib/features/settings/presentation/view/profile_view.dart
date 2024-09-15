@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practice_chat_app/shared/widgets/app_column.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -10,6 +11,11 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile"),
+      ),
+      body: AppColumn(children: []),
+    );
   }
 }

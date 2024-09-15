@@ -9,6 +9,7 @@ class AppAlert {
   static void showToast(BuildContext context,
       {required String message, IconData? icon}) {
     DelightToastBar(
+      snackbarDuration: const Duration(seconds: 2),
       autoDismiss: true,
       position: DelightSnackbarPosition.top,
       builder: (context) {

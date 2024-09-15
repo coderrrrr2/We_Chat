@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practice_chat_app/features/home/presentation/view/home_view.dart';
 import 'package:practice_chat_app/features/navigation/viewmodel/bottom_navbar_provider.dart';
-import 'package:practice_chat_app/features/profile/presentation/view/profile_view.dart';
+import 'package:practice_chat_app/features/settings/presentation/view/settings_view.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenBase extends StatelessWidget {
@@ -13,7 +13,7 @@ class HomeScreenBase extends StatelessWidget {
       builder: (_, vm, __) => Scaffold(
         body: IndexedStack(
           index: vm.currentIndex,
-          children: const [HomeView(), ProfileView()],
+          children: const [HomeView(), SettingsView()],
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: vm.currentIndex,
@@ -26,8 +26,8 @@ class HomeScreenBase extends StatelessWidget {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.settings),
+              label: 'Settings',
             ),
           ],
         ),

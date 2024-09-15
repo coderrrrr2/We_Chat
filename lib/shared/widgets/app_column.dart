@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practice_chat_app/shared/utils/app_color.dart';
 
 class AppColumn extends StatefulWidget {
   final bool isScrollable;
@@ -59,9 +60,11 @@ class _AppColumnState extends State<AppColumn> {
           // Loading indicator overlay
           if (widget.isLoading)
             Container(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withOpacity(0.4),
               child: const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: whiteColor,
+                ),
               ),
             ),
         ],
