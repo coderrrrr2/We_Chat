@@ -1,5 +1,9 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:practice_chat_app/core/init/init_services.dart';
+import 'package:practice_chat_app/models/user_model.dart';
+import 'package:practice_chat_app/shared/utils/app_alert.dart';
 
 class AuthService {
   AuthService() {
@@ -51,6 +55,25 @@ class AuthService {
       return true;
     } catch (e) {
       log('Error during logout: $e');
+      return false;
+    }
+  }
+
+  Future<bool> createUserProfile(
+      {required BuildContext context, required UserProfile userProfile}) async {
+    try {
+      await usersCollection?.doc(userProfile.uid).set(userProfile).then(
+        (value) {
+          AppAlert.showToast(context,
+              icon: Icons.mark_chat_read,
+              message: "User registered Succesfully");
+        },
+      );
+
+      return true;
+    } catch (e) {
+      log(e.toString());
+
       return false;
     }
   }
