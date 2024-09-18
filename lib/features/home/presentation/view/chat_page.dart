@@ -47,7 +47,7 @@ class _ChatPageState extends State<ChatPage> {
         title: Text(widget.args.userProfile.name),
       ),
       body: StreamBuilder(
-          stream: dataBaseService.getMessages(currentUser!.id, otherUser!.id),
+          stream: chatService.getMessages(currentUser!.id, otherUser!.id),
           builder: (context, snapshot) {
             Chat? chat = snapshot.data.data();
             List<ChatMessage> messages = [];
@@ -77,7 +77,7 @@ class _ChatPageState extends State<ChatPage> {
             content: messageTyped.medias!.first.url,
             sentAt: Timestamp.fromDate(messageTyped.createdAt),
             messageType: MessageType.image);
-        await dataBaseService.sendChatMessage(
+        await chatService.sendChatMessage(
             currentUser!.id, otherUser!.id, message);
         return;
       }
@@ -87,8 +87,7 @@ class _ChatPageState extends State<ChatPage> {
         content: messageTyped.text,
         sentAt: Timestamp.fromDate(messageTyped.createdAt),
         messageType: MessageType.text);
-    await dataBaseService.sendChatMessage(
-        currentUser!.id, otherUser!.id, message);
+    await chatService.sendChatMessage(currentUser!.id, otherUser!.id, message);
   }
 
   List<ChatMessage> generateChatMessageList(List<Message> messages) {
@@ -122,7 +121,7 @@ class _ChatPageState extends State<ChatPage> {
     return IconButton(
       icon: const Icon(Icons.photo),
       onPressed: () async {
-        final image = await ImagePickerService().pickImageFromGallery();
+        final image = await ImagePickerService.pickImageFromGallery();
         if (image != null) {
           setState(() {
             _selectedImage = image;

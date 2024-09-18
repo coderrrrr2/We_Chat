@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:practice_chat_app/core/services/auth_service.dart';
+import 'package:practice_chat_app/core/services/chat_service.dart';
+import 'package:practice_chat_app/core/services/profile_service.dart';
 import 'package:practice_chat_app/core/services/storage_service.dart';
 import 'package:practice_chat_app/firebase_options.dart';
 import 'package:practice_chat_app/models/chat_model.dart';
@@ -15,6 +19,8 @@ Future<void> registerServices() async {
   final GetIt getIt = GetIt.instance;
   getIt.registerSingleton(AuthService());
   getIt.registerSingleton(StorageService());
+  getIt.registerSingleton(ChatService());
+  getIt.registerSingleton(ProfileService());
 
   _setupCollectionReferences();
 }
@@ -23,6 +29,8 @@ Future<void> registerServices() async {
 final GetIt _getIt = GetIt.instance;
 final authService = _getIt.get<AuthService>();
 final storageService = _getIt.get<StorageService>();
+final chatService = _getIt.get<ChatService>();
+final profileService = _getIt.get<ProfileService>();
 
 String generateChatId({required String uuid1, required String uuid2}) {
   final List<String> uuids = [uuid1, uuid2];
@@ -49,8 +57,11 @@ void _setupCollectionReferences() {
   );
   chatCollection = _firestore.collection('chats').withConverter<Chat>(
       fromFirestore: (snapshot, _) {
+    log(snapshot.data().toString());
+
     return Chat.fromJson(snapshot.data()!);
   }, toFirestore: (chat, _) {
+    log(chat.toJson().toString());
     return chat.toJson();
   });
 }

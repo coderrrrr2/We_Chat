@@ -26,7 +26,6 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final TextEditingController nameController = TextEditingController();
-  final ImagePickerService imagePicker = ImagePickerService();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -94,7 +93,7 @@ class _RegisterViewState extends State<RegisterView> {
                         if (pfpUrl != null) {
                           if (!context.mounted) return;
                           final createUser =
-                              await dataBaseService.createUserProfile(
+                              await authService.createUserProfile(
                                   context: context,
                                   userProfile: UserProfile(
                                       uid: authService.user!.uid,
@@ -140,7 +139,7 @@ class _RegisterViewState extends State<RegisterView> {
   Widget _getImageContainer() {
     return GestureDetector(
       onTap: () async {
-        await imagePicker.pickImageFromGallery().then(
+        await ImagePickerService.pickImageFromGallery().then(
           (file) {
             if (file != null) {
               setState(() {
