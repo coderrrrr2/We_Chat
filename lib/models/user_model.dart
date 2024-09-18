@@ -39,6 +39,19 @@ class UserProfile {
     );
   }
 
+  // Copy with method to create a new UserProfile with updated fields
+  UserProfile copyWith({
+    String? uid,
+    String? name,
+    String? pfpUrl,
+  }) {
+    return UserProfile(
+      uid: uid ?? this.uid,
+      name: name ?? this.name,
+      pfpUrl: pfpUrl ?? this.pfpUrl,
+    );
+  }
+
   // Optional: String representation for easier debugging
   @override
   String toString() {
