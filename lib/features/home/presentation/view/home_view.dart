@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
         body: StreamBuilder(
-          stream: dataBaseService.getUserProfiles(),
+          stream: chatService.getUserProfiles(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Center(
@@ -62,13 +62,13 @@ class _HomeViewState extends State<HomeView> {
                   return ChatTile(
                     userProfile: user,
                     ontap: () async {
-                      final isChatExists = await dataBaseService
-                          .checkIfChatExits(authService.user!.uid, user.uid);
+                      final isChatExists = await chatService.checkIfChatExits(
+                          authService.user!.uid, user.uid);
                       if (isChatExists) {
                         AppNavigator.pushRoute(HomeRoutes.chatView,
                             arguments: ChatPageArgs(userProfile: user));
                       } else {
-                        await dataBaseService.createNewChat(
+                        await chatService.createNewChat(
                             authService.user!.uid, user.uid);
                         AppNavigator.pushRoute(HomeRoutes.chatView,
                             arguments: ChatPageArgs(userProfile: user));
