@@ -27,6 +27,7 @@ class _SettingsViewState extends State<SettingsView> {
         body: StreamBuilder(
             stream: profileService.getUserProfile(),
             builder: (context, snapshot) {
+              if (snapshot.data != null) {}
               final data = snapshot.data!.docs;
               final user = data[0].data();
 

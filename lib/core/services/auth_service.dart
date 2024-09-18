@@ -39,6 +39,7 @@ class AuthService {
           email: email, password: password);
       if (credential.user != null) {
         _user = credential.user;
+        _user!.sendEmailVerification();
         return true;
       }
     } catch (e) {

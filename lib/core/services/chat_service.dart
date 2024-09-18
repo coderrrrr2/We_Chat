@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:practice_chat_app/core/init/init_services.dart';
 import 'package:practice_chat_app/models/chat_model.dart';
 import 'package:practice_chat_app/models/message_model.dart';
@@ -7,7 +6,6 @@ import 'package:practice_chat_app/models/user_model.dart';
 
 class ChatService {
   Stream<QuerySnapshot<UserProfile>> getUserProfiles() {
-    debugPrint(authService.user!.uid);
     return usersCollection
         ?.where("uid", isNotEqualTo: authService.user!.uid)
         .snapshots() as Stream<QuerySnapshot<UserProfile>>;
