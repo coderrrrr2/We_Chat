@@ -44,100 +44,97 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
-      builder: (_, vm, __) => Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Form(
-          key: formKey,
-          child: AppColumn(
-            isLoading: vm.isLoading,
-            children: [
-              const LeadingText(text: "Let's, get going!"),
-              const TrailingText(
-                  text: "Register an account using the form below"),
-              addHeight(20),
-              Center(child: _getImageContainer()),
-              addHeight(10),
-              AppTextField(
-                controller: nameController,
-                header: 'Name',
-                validator: (p0) {
-                  return AppValidator.validateName(p0);
-                },
-              ),
-              AppTextField(
-                controller: emailController,
-                header: 'Email',
-                validator: (p0) {
-                  return AppValidator.validateEmail(p0);
-                },
-              ),
-              AppTextField(
-                controller: passwordController,
-                header: 'Password',
-                obscureText: true,
-                validator: (p0) {
-                  return AppValidator.validatePassword(p0);
-                },
-              ),
-              addHeight(10),
-              AppButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate() &&
-                        _selectedImage != null) {
-                      final isSignedUp = await vm.signUp(
-                          emailController.text, passwordController.text);
-                      if (isSignedUp) {
-                        String? pfpUrl = await vm.uploadUserProfilePicture(
-                            file: _selectedImage!, uid: authService.user!.uid);
-                        log(pfpUrl ?? "image not uploaded succesfully");
-                        if (pfpUrl != null) {
-                          if (!context.mounted) return;
-                          final createUser = await vm.createUserProfile(
-                              context,
-                              UserProfile(
-                                  uid: authService.user!.uid,
-                                  name: nameController.text,
-                                  pfpUrl: pfpUrl));
-                          if (createUser) {
-                            await AppDialog.showCustomDialog(
-                                VerificationEmailDialogContent(
-                              onDimssed: () {
-                                log("sss");
-                                Navigator.of(context).pop();
-                                AppNavigator.replaceAllRoutes(
-                                    AuthRoutes.chooseLoginView);
-                              },
-                            ), context: context);
-                          }
-                        }
-                      } else {
+      builder: (_, vm, __) => Form(
+        key: formKey,
+        child: AppColumn(
+          isLoading: vm.isLoading,
+          children: [
+            const LeadingText(text: "Let's, get going!"),
+            const TrailingText(
+                text: "Register an account using the form below"),
+            addHeight(20),
+            Center(child: _getImageContainer()),
+            addHeight(10),
+            AppTextField(
+              controller: nameController,
+              header: 'Name',
+              validator: (p0) {
+                return AppValidator.validateName(p0);
+              },
+            ),
+            AppTextField(
+              controller: emailController,
+              header: 'Email',
+              validator: (p0) {
+                return AppValidator.validateEmail(p0);
+              },
+            ),
+            AppTextField(
+              controller: passwordController,
+              header: 'Password',
+              obscureText: true,
+              validator: (p0) {
+                return AppValidator.validatePassword(p0);
+              },
+            ),
+            addHeight(10),
+            AppButton(
+                onPressed: () async {
+                  if (formKey.currentState!.validate() &&
+                      _selectedImage != null) {
+                    final isSignedUp = await vm.signUp(
+                        emailController.text, passwordController.text);
+                    if (isSignedUp) {
+                      String? pfpUrl = await vm.uploadUserProfilePicture(
+                          file: _selectedImage!, uid: authService.user!.uid);
+                      log(pfpUrl ?? "image not uploaded succesfully");
+                      if (pfpUrl != null) {
                         if (!context.mounted) return;
-
-                        AppAlert.showToast(context,
-                            message: "Failed to Login, Try again");
+                        final createUser = await vm.createUserProfile(
+                            context,
+                            UserProfile(
+                                uid: authService.user!.uid,
+                                name: nameController.text,
+                                pfpUrl: pfpUrl));
+                        if (createUser) {
+                          await AppDialog.showCustomDialog(
+                              VerificationEmailDialogContent(
+                            onDimssed: () {
+                              log("sss");
+                              Navigator.of(context).pop();
+                              AppNavigator.replaceAllRoutes(
+                                  AuthRoutes.chooseLoginView);
+                            },
+                          ), context: context);
+                        }
                       }
-                    } else if (_selectedImage == null) {
+                    } else {
+                      if (!context.mounted) return;
+
                       AppAlert.showToast(context,
-                          message: "An Image must be selected");
+                          message: "Failed to Login, Try again");
                     }
+                  } else if (_selectedImage == null) {
+                    AppAlert.showToast(context,
+                        message: "An Image must be selected");
+                  }
+                },
+                text: 'Register'),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Already have an account?'),
+                TextButton(
+                  onPressed: () {
+                    AppNavigator.replaceRoute(AuthRoutes.chooseLoginView);
                   },
-                  text: 'Register'),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Already have an account?'),
-                  TextButton(
-                    onPressed: () {
-                      AppNavigator.replaceRoute(AuthRoutes.chooseLoginView);
-                    },
-                    child: const Text('Login'),
-                  ),
-                  addHeight(20),
-                ],
-              ),
-            ],
-          ),
+                  child: const Text('Login'),
+                ),
+                addHeight(20),
+              ],
+            ),
+          ],
         ),
       ),
     );

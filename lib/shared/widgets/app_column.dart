@@ -3,6 +3,8 @@ import 'package:practice_chat_app/shared/utils/app_color.dart';
 
 class AppColumn extends StatefulWidget {
   final bool isScrollable;
+  final bool resizeToAvoidBottomInset;
+
   final bool isLoading;
   final EdgeInsetsGeometry? padding;
   final List<Widget> children;
@@ -12,6 +14,7 @@ class AppColumn extends StatefulWidget {
     this.isScrollable = false,
     required this.children,
     this.isLoading = false,
+    this.resizeToAvoidBottomInset = true,
     this.padding,
   });
 
@@ -34,26 +37,32 @@ class _AppColumnState extends State<AppColumn> {
         children: [
           // Main content
           widget.isScrollable
-              ? SafeArea(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: widget.padding ??
-                        const EdgeInsets.symmetric(horizontal: 20)
-                            .copyWith(top: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: widget.children,
+              ? Scaffold(
+                  resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+                  body: SafeArea(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: widget.padding ??
+                          const EdgeInsets.symmetric(horizontal: 20)
+                              .copyWith(top: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: widget.children,
+                      ),
                     ),
                   ),
                 )
-              : SafeArea(
-                  child: Padding(
-                    padding: widget.padding ??
-                        const EdgeInsets.symmetric(horizontal: 20)
-                            .copyWith(top: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: widget.children,
+              : Scaffold(
+                  resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+                  body: SafeArea(
+                    child: Padding(
+                      padding: widget.padding ??
+                          const EdgeInsets.symmetric(horizontal: 20)
+                              .copyWith(top: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: widget.children,
+                      ),
                     ),
                   ),
                 ),

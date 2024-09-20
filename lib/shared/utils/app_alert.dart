@@ -19,7 +19,10 @@ class AppAlert {
               size: 28,
               color: blackColor,
             ),
-            title: Text(message));
+            title: Text(
+              message,
+              style: const TextStyle(color: blackColor),
+            ));
       },
     ).show(context);
   }

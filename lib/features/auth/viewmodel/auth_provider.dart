@@ -24,13 +24,38 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> logIn(String email, String password) async {
+  String _errorMessage = '';
+
+  String get errorMessage => _errorMessage;
+
+  set errorMessage(String message) {
+    _errorMessage = message;
+    notifyListeners();
+  }
+
+  Future<bool> emailAndPasswordLogin(String email, String password) async {
     try {
       isLoading = true;
 
-      return await authService.login(email, password);
+      return await authService.emailAndPasswordLogin(email, password);
     } catch (e) {
       isLoading = false;
+      errorMessage = e.toString();
+      return false;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  Future<bool> passwordLessLogin(String email) async {
+    try {
+      isLoading = true;
+
+      return await authService.passwordLessLogin(email);
+    } catch (e) {
+      isLoading = false;
+      errorMessage = e.toString();
+
       return false;
     } finally {
       isLoading = false;
@@ -44,6 +69,8 @@ class AuthProvider extends ChangeNotifier {
       return await authService.signUp(email, password);
     } catch (e) {
       isLoading = false;
+      errorMessage = e.toString();
+
       return false;
     }
   }
@@ -59,6 +86,8 @@ class AuthProvider extends ChangeNotifier {
       );
     } catch (e) {
       isLoading = false;
+      errorMessage = e.toString();
+
       return false;
     } finally {
       isLoading = false;
@@ -74,6 +103,8 @@ class AuthProvider extends ChangeNotifier {
           file: file, uid: authService.user!.uid);
     } catch (e) {
       isLoading = false;
+      errorMessage = e.toString();
+
       return null;
     }
   }

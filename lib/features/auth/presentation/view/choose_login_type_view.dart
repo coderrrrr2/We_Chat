@@ -16,33 +16,33 @@ class ChooseLoginTypeView extends StatefulWidget {
 class _ChooseLoginTypeViewState extends State<ChooseLoginTypeView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: AppColumn(
-        children: [
-          const LeadingText(text: "Let's, get going!"),
-          const TrailingText(text: "Choose your Login Type"),
-          addHeight(150),
-          _buildLoginButton(() {
-            AppNavigator.pushRoute(AuthRoutes.loginWithEmailAndPassword);
-          }, 'Email', Icons.email),
-          addHeight(30),
-          _buildLoginButton(() {}, 'Passwordless', Icons.link),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Don\'t have an account?'),
-              TextButton(
-                onPressed: () {
-                  AppNavigator.pushRoute(AuthRoutes.register);
-                },
-                child: const Text('Sign Up'),
-              ),
-              addHeight(60),
-            ],
-          ),
-        ],
-      ),
+    return AppColumn(
+      children: [
+        const LeadingText(text: "Let's, get going!"),
+        const TrailingText(text: "Choose your Login Type"),
+        addHeight(150),
+        _buildLoginButton(() {
+          AppNavigator.pushRoute(AuthRoutes.loginWithEmailAndPassword);
+        }, 'Email', Icons.email),
+        addHeight(30),
+        _buildLoginButton(() {
+          AppNavigator.pushRoute(AuthRoutes.passwordLessLogin);
+        }, 'Passwordless', Icons.link),
+        const Spacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Don\'t have an account?'),
+            TextButton(
+              onPressed: () {
+                AppNavigator.pushRoute(AuthRoutes.register);
+              },
+              child: const Text('Sign Up'),
+            ),
+            addHeight(60),
+          ],
+        ),
+      ],
     );
   }
 
