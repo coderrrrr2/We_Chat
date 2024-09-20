@@ -13,14 +13,16 @@ import 'package:practice_chat_app/shared/shared_widgets.dart';
 import 'package:practice_chat_app/shared/utils/text.dart';
 import 'package:provider/provider.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class LogInWithEmailAndPasswordView extends StatefulWidget {
+  const LogInWithEmailAndPasswordView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<LogInWithEmailAndPasswordView> createState() =>
+      _LogInWithEmailAndPasswordViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LogInWithEmailAndPasswordViewState
+    extends State<LogInWithEmailAndPasswordView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -36,6 +38,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (_, vm, __) => Scaffold(
+        appBar: AppBar(),
         resizeToAvoidBottomInset: false,
         body: Form(
           key: formKey,

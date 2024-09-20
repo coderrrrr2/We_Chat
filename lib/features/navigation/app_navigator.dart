@@ -36,4 +36,10 @@ class AppNavigator {
   static void popUntilRoute(RoutePredicate predicate) {
     Get.until(predicate);
   }
+
+  static void popDialog() {
+    if (Get.isDialogOpen ?? false) {
+      Get.back(); // This will close the current dialog
+    }
+  }
 }
