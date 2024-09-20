@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
           stream: chatService.getMessages(currentUser!.id, otherUser!.id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator.adaptive();
+              return const CircularProgressIndicator.adaptive();
             }
             if (snapshot.hasData) {
               Chat? chat = snapshot.data.data();

@@ -17,7 +17,7 @@ class AuthService {
 
   User? get user => _user;
 
-  Future<bool> login(String email, String password) async {
+  Future<bool> emailAndPasswordLogin(String email, String password) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -29,6 +29,28 @@ class AuthService {
       log('Error during login: $e');
     }
     return false;
+  }
+
+  Future<bool> passwordLessLogin(String email) async {
+    try {
+      await _auth.sendSignInLinkToEmail(
+        email: email,
+        actionCodeSettings: ActionCodeSettings(
+          url:
+              'https://practice-chat-app-137b8.firebaseapp.com/__/auth/action', // Replace with your app's URL
+          androidPackageName:
+              'com.example.app', // Replace with your Android package name
+          handleCodeInApp: true,
+          iOSBundleId:
+              'com.example.practiceChatApp', // Replace with your iOS bundle ID
+        ),
+      );
+      return true;
+    } catch (e) {
+      log('Error sending authentication link: $e');
+
+      return false;
+    }
   }
 
   Future<bool> signUp(String email, String password) async {

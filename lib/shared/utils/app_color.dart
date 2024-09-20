@@ -5,6 +5,8 @@ const whiteColor = Colors.white;
 
 const scaffoldBackGroundColor = Color.fromRGBO(255, 250, 244, 1);
 
+const bottomNavBarColor = Color.fromRGBO(233, 228, 221, 1);
+
 const primaryColor = Color.fromRGBO(252, 243, 203, 1.0);
 
 const darkGreyColor = Color.fromRGBO(51, 51, 51, 1.0); // RGB: (51, 51, 51)

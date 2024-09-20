@@ -10,7 +10,7 @@ ThemeData lightTheme() {
     appBarTheme: AppBarTheme(
       backgroundColor: scaffoldBackGroundColor,
       titleTextStyle: GoogleFonts.montserrat(
-        textStyle: const TextStyle(color: Colors.white, fontSize: 20),
+        textStyle: const TextStyle(color: Colors.black, fontSize: 20),
       ),
     ),
   );
