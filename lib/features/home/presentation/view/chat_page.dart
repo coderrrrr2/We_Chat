@@ -49,22 +49,28 @@ class _ChatPageState extends State<ChatPage> {
       body: StreamBuilder(
           stream: chatService.getMessages(currentUser!.id, otherUser!.id),
           builder: (context, snapshot) {
-            Chat? chat = snapshot.data.data();
-            List<ChatMessage> messages = [];
-            if (chat != null && chat.messages != null) {
-              messages = generateChatMessageList(chat.messages!);
-              messages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator.adaptive();
             }
+            if (snapshot.hasData) {
+              Chat? chat = snapshot.data.data();
+              List<ChatMessage> messages = [];
+              if (chat != null && chat.messages != null) {
+                messages = generateChatMessageList(chat.messages!);
+                messages.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+              }
 
-            return DashChat(
-                messageOptions: const MessageOptions(showTime: true),
-                inputOptions: InputOptions(
-                    alwaysShowSend: true, trailing: [mediaPageButton()]),
-                currentUser: currentUser!,
-                onSend: (message) {
-                  sendMessage(message);
-                },
-                messages: messages);
+              return DashChat(
+                  messageOptions: const MessageOptions(showTime: true),
+                  inputOptions: InputOptions(
+                      alwaysShowSend: true, trailing: [mediaPageButton()]),
+                  currentUser: currentUser!,
+                  onSend: (message) {
+                    sendMessage(message);
+                  },
+                  messages: messages);
+            }
+            return Container();
           }),
     );
   }
