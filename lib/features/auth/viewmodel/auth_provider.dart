@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:practice_chat_app/core/init/init_services.dart';
+import 'package:practice_chat_app/models/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
   AuthProvider() {
@@ -42,8 +45,36 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       return false;
+    }
+  }
+
+  Future<bool> createUserProfile(
+      BuildContext context, UserProfile userprofile) async {
+    try {
+      isLoading = true;
+
+      return await authService.createUserProfile(
+        context: context,
+        userProfile: userprofile,
+      );
+    } catch (e) {
+      isLoading = false;
+      return false;
     } finally {
       isLoading = false;
+    }
+  }
+
+  Future<String?> uploadUserProfilePicture(
+      {required File file, required String uid}) async {
+    try {
+      isLoading = true;
+
+      return await storageService.uploadUserProfilePicture(
+          file: file, uid: authService.user!.uid);
+    } catch (e) {
+      isLoading = false;
+      return null;
     }
   }
 }

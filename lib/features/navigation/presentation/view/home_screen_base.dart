@@ -4,9 +4,15 @@ import 'package:practice_chat_app/features/navigation/viewmodel/bottom_navbar_pr
 import 'package:practice_chat_app/features/settings/presentation/view/settings_view.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreenBase extends StatelessWidget {
+class HomeScreenBase extends StatefulWidget {
   const HomeScreenBase({super.key});
 
+  @override
+  State<HomeScreenBase> createState() => _HomeScreenBaseState();
+}
+
+class _HomeScreenBaseState extends State<HomeScreenBase> {
+  @override
   @override
   Widget build(BuildContext context) {
     return Consumer<BottomNavbarProvider>(

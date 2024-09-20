@@ -27,52 +27,54 @@ class _SettingsViewState extends State<SettingsView> {
         body: StreamBuilder(
             stream: profileService.getUserProfile(),
             builder: (context, snapshot) {
-              if (snapshot.data != null) {}
-              final data = snapshot.data!.docs;
-              final user = data[0].data();
+              if (snapshot.data != null) {
+                final data = snapshot.data!.docs;
+                final user = data[0].data();
 
-              return AppColumn(children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(user.pfpUrl),
-                  ),
-                ),
-                addHeight(10),
-                Center(
-                  child: AppText(
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                return AppColumn(children: [
+                  Center(
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(user.pfpUrl),
                     ),
-                    text: user.name,
                   ),
-                ),
-                addHeight(20),
-                ListTile(
-                  title: Row(
-                    children: [
-                      Text(vm.isLightMode ? "Light Mode" : "Dark Mode"),
-                      addWidth(10),
-                      Icon(isLightMode ? Icons.sunny : Icons.dark_mode),
-                    ],
+                  addHeight(10),
+                  Center(
+                    child: AppText(
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      text: user.name,
+                    ),
                   ),
-                  trailing: Switch(
-                    value: vm.isLightMode,
-                    onChanged: (value) {
-                      vm.updateModeStatus(value);
+                  addHeight(20),
+                  ListTile(
+                    title: Row(
+                      children: [
+                        Text(vm.isLightMode ? "Light Mode" : "Dark Mode"),
+                        addWidth(10),
+                        Icon(isLightMode ? Icons.sunny : Icons.dark_mode),
+                      ],
+                    ),
+                    trailing: Switch(
+                      value: vm.isLightMode,
+                      onChanged: (value) {
+                        vm.updateModeStatus(value);
+                      },
+                    ),
+                  ),
+                  addHeight(10),
+                  ListTile(
+                    title: const Text("View Profile"),
+                    trailing: const Icon(Icons.person),
+                    onTap: () {
+                      AppNavigator.pushRoute(SettingsRoutes.profileView);
                     },
                   ),
-                ),
-                addHeight(10),
-                ListTile(
-                  title: const Text("View Profile"),
-                  trailing: const Icon(Icons.person),
-                  onTap: () {
-                    AppNavigator.pushRoute(SettingsRoutes.profileView);
-                  },
-                ),
-              ]);
+                ]);
+              }
+              return Container();
             }),
       );
     });

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:practice_chat_app/core/init/init_services.dart';
 import 'package:practice_chat_app/features/auth/presentation/routes/routes.dart';
+import 'package:practice_chat_app/features/auth/presentation/view/widgets/verification_email_dialog_content.dart';
 import 'package:practice_chat_app/features/home/presentation/routes/routes.dart';
 import 'package:practice_chat_app/features/home/presentation/view/chat_page.dart';
 import 'package:practice_chat_app/features/home/presentation/view/widgets/chat_tile.dart';
@@ -8,6 +11,7 @@ import 'package:practice_chat_app/features/navigation/app_navigator.dart';
 import 'package:practice_chat_app/models/user_model.dart';
 import 'package:practice_chat_app/shared/utils/app_alert.dart';
 import 'package:practice_chat_app/shared/utils/app_color.dart';
+import 'package:practice_chat_app/shared/widgets/app_dialog.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -17,6 +21,35 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        if (authService.user != null) {
+          if (!authService.user!.emailVerified) {
+            AppDialog.showCustomDialog(
+                VerificationEmailDialogContent(
+                  isLoggedIn: true,
+                  onDimssed: () async {
+                    await authService.logout().then(
+                      (value) {
+                        AppNavigator.popDialog();
+                        AppNavigator.replaceAllRoutes(
+                            AuthRoutes.chooseLoginView);
+                      },
+                    );
+                  },
+                ),
+                context: context);
+          }
+        } else {
+          log("user is null");
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +62,8 @@ class _HomeViewState extends State<HomeView> {
                   authService.logout().then(
                     (isLoggedOut) {
                       if (isLoggedOut) {
-                        AppAlert.showToast(context,
-                            message: "Succesfully Logged out");
-                        AppNavigator.replaceAllRoutes(AuthRoutes.login);
+                        AppNavigator.replaceAllRoutes(
+                            AuthRoutes.chooseLoginView);
                       } else {
                         AppAlert.showToast(context,
                             message: "Failed to Logout, Try again");
@@ -55,6 +87,11 @@ class _HomeViewState extends State<HomeView> {
             }
             if (snapshot.hasData && snapshot.data != null) {
               final users = snapshot.data!.docs;
+              if (users.length == 0) {
+                return const Center(
+                  child: Text("No users found"),
+                );
+              }
               return ListView.builder(
                 itemCount: users.length,
                 itemBuilder: (context, index) {

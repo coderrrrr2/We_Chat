@@ -7,10 +7,10 @@ import 'package:practice_chat_app/core/services/image_picker_service.dart';
 import 'package:practice_chat_app/features/auth/presentation/routes/routes.dart';
 import 'package:practice_chat_app/features/auth/presentation/view/widgets/verification_email_dialog_content.dart';
 import 'package:practice_chat_app/features/auth/viewmodel/auth_provider.dart';
-import 'package:practice_chat_app/features/home/presentation/routes/routes.dart';
 import 'package:practice_chat_app/features/navigation/app_navigator.dart';
 import 'package:practice_chat_app/models/user_model.dart';
 import 'package:practice_chat_app/shared/utils/app_alert.dart';
+import 'package:practice_chat_app/shared/utils/app_color.dart';
 import 'package:practice_chat_app/shared/widgets/app_button.dart';
 import 'package:practice_chat_app/shared/widgets/app_column.dart';
 import 'package:practice_chat_app/shared/widgets/app_dialog.dart';
@@ -87,25 +87,27 @@ class _RegisterViewState extends State<RegisterView> {
                       final isSignedUp = await vm.signUp(
                           emailController.text, passwordController.text);
                       if (isSignedUp) {
-                        String? pfpUrl =
-                            await storageService.uploadUserProfilePicture(
-                                file: _selectedImage!,
-                                uid: authService.user!.uid);
+                        String? pfpUrl = await vm.uploadUserProfilePicture(
+                            file: _selectedImage!, uid: authService.user!.uid);
                         log(pfpUrl ?? "image not uploaded succesfully");
                         if (pfpUrl != null) {
                           if (!context.mounted) return;
-                          final createUser =
-                              await authService.createUserProfile(
-                                  context: context,
-                                  userProfile: UserProfile(
-                                      uid: authService.user!.uid,
-                                      name: nameController.text,
-                                      pfpUrl: pfpUrl));
+                          final createUser = await vm.createUserProfile(
+                              context,
+                              UserProfile(
+                                  uid: authService.user!.uid,
+                                  name: nameController.text,
+                                  pfpUrl: pfpUrl));
                           if (createUser) {
-                            AppDialog.showCustomDialog(
-                                const VerificationEmailDialogContent(),
-                                context: context);
-                            // AppNavigator.replaceAllRoutes(HomeRoutes.baseView);
+                            await AppDialog.showCustomDialog(
+                                VerificationEmailDialogContent(
+                              onDimssed: () {
+                                log("sss");
+                                Navigator.of(context).pop();
+                                AppNavigator.replaceAllRoutes(
+                                    AuthRoutes.chooseLoginView);
+                              },
+                            ), context: context);
                           }
                         }
                       } else {
@@ -127,7 +129,7 @@ class _RegisterViewState extends State<RegisterView> {
                   const Text('Already have an account?'),
                   TextButton(
                     onPressed: () {
-                      AppNavigator.replaceRoute(AuthRoutes.login);
+                      AppNavigator.replaceRoute(AuthRoutes.chooseLoginView);
                     },
                     child: const Text('Login'),
                   ),
@@ -158,6 +160,7 @@ class _RegisterViewState extends State<RegisterView> {
       },
       child: CircleAvatar(
         radius: MediaQuery.of(context).size.width * 0.15,
+        backgroundColor: lightGreyColor,
         backgroundImage:
             _selectedImage != null ? FileImage(_selectedImage!) : null,
       ),

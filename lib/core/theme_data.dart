@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_chat_app/shared/utils/app_color.dart';
 
 ThemeData lightTheme() {
   return ThemeData(
     brightness: Brightness.light,
     textTheme: GoogleFonts.montserratTextTheme(),
-    primarySwatch: Colors.blue,
+    scaffoldBackgroundColor: scaffoldBackGroundColor,
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.blue,
+      backgroundColor: scaffoldBackGroundColor,
       titleTextStyle: GoogleFonts.montserrat(
         textStyle: const TextStyle(color: Colors.white, fontSize: 20),
       ),
@@ -21,9 +22,8 @@ ThemeData darkTheme() {
     textTheme: GoogleFonts.montserratTextTheme(
       ThemeData(brightness: Brightness.dark).textTheme,
     ),
-    primarySwatch: Colors.blue,
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: scaffoldBackGroundColor,
       titleTextStyle: GoogleFonts.montserrat(
         textStyle: const TextStyle(color: Colors.white, fontSize: 20),
       ),
