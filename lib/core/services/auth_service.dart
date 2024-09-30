@@ -37,7 +37,7 @@ class AuthService {
         email: email,
         actionCodeSettings: ActionCodeSettings(
           url:
-              'https://practice-chat-app-137b8.firebaseapp.com/__/auth/action', // Replace with your app's URL
+              'practice-chat-app-137b8.firebaseapp.com', // Replace with your app's URL
           androidPackageName:
               'com.example.app', // Replace with your Android package name
           handleCodeInApp: true,
