@@ -12,7 +12,8 @@ import 'package:practice_chat_app/models/chat_model.dart';
 import 'package:practice_chat_app/models/user_model.dart';
 
 Future<void> setupFirebase() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 Future<void> registerServices() async {
