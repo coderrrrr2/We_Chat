@@ -5,6 +5,7 @@ import 'package:practice_chat_app/features/home/presentation/routes/routes.dart'
 import 'package:practice_chat_app/features/settings/presentation/routes/pages.dart';
 
 class AppPages {
+  String f = 'f';
   static const initial = HomeRoutes.baseView;
   static final List<GetPage> pages = [
     ...authPages,
