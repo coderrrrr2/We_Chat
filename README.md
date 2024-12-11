@@ -1,4 +1,4 @@
-# We_Chat
+# WeChat
 
 
 ChatApp
