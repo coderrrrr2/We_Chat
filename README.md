@@ -12,6 +12,6 @@ Dark Mode: Switch between light and dark themes.
 
 Tech Stack
 Frontend: Flutter (Dart)
-Backend: Firebase (Authentication, Firestore, Storage, and Messaging)
-State Management: Riverpod or GetX (based on your preference)
+Backend: Firebase (Authentication, Firestore and Storage)
+State Management: Provider
 Design: Material Design for a clean and intuitive UI.
