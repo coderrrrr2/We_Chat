@@ -1,7 +1,7 @@
 # WeChat
 
 
-ChatApp
+WeChat
 A feature-rich chat application built using Flutter, designed to provide a seamless and real-time communication experience.
 
 Features
